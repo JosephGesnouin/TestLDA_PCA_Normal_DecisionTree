@@ -69,8 +69,24 @@ resLDA=res=predict(fit, as.data.frame(test2), type="class")
 
 #####Comparaison resultats:
 table(test[,5],resNormal)
+"resNormal
+setosa versicolor virginica
+setosa        263          0         0
+versicolor      0        260         4
+virginica       0          7       266"
+
 table(test[,5],resPCA)
+"            resPCA
+             setosa versicolor virginica
+setosa        263          0         0
+versicolor      0        260         4
+virginica       0          9       264"
 table(test[,5],resLDA)
+"            resLDA
+             setosa versicolor virginica
+  setosa        263          0         0
+  versicolor      0        253        11
+  virginica       0          0       273"
 
 
 
