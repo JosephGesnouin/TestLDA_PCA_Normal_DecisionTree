@@ -46,42 +46,38 @@ resPCA=res=predict(fit, as.data.frame(test3), type="class")
 
 ####arbre de decision post LDA
 
-a=lda(Species ~., data=train)
-plot(a, col = as.numeric(train[ ,5]))
+a=lda(Species ~., data=train) #on fait la LDA sur train
+plot(a, col = as.numeric(train[ ,5])) #on regarde la tete des axes factoriels
 
-lda.pred <- predict(a)$class
-table(train[,5],lda.pred)
-
-
-train2=as.matrix(train[,-5])%*%as.matrix(a$scaling)
+train2=as.matrix(train[,-5])%*%as.matrix(a$scaling) ####on projete sur le nouvel espace de dim train via les axes trouv??s via train
 plot(train2, col = as.numeric(train[ ,5]))
 
-test2=as.matrix(test[,-5])%*%as.matrix(a$scaling)
+test2=as.matrix(test[,-5])%*%as.matrix(a$scaling) ###On projete sur le nouvel espace de dim test via les axes trouv??s via train
 plot(test2, col = as.numeric(test[ ,5]))
 
 
-fit <- rpart(train$Species ~ .,data=as.data.frame(train2))
+fit <- rpart(train$Species ~ .,data=as.data.frame(train2))  ###on fit sur train
 prp(fit,extra=1)
-resLDA=res=predict(fit, as.data.frame(test2), type="class")
+resLDA=res=predict(fit, as.data.frame(test2), type="class") ##on predit
 
 
 
 
 #####Comparaison resultats:
-table(test[,5],resNormal)
+table(test[,5],resNormal) #Decision tree tout  seul
 "resNormal
 setosa versicolor virginica
 setosa        263          0         0
 versicolor      0        260         4
 virginica       0          7       266"
 
-table(test[,5],resPCA)
+table(test[,5],resPCA) #Decission tree post PCA
 "            resPCA
              setosa versicolor virginica
 setosa        263          0         0
 versicolor      0        260         4
 virginica       0          9       264"
-table(test[,5],resLDA)
+table(test[,5],resLDA) #Decision tree post LDA
 "            resLDA
              setosa versicolor virginica
   setosa        263          0         0
