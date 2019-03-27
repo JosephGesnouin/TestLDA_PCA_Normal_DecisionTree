@@ -39,19 +39,19 @@ resPCA=res=predict(fit, as.data.frame(test3), type="class")
 
 ####arbre de decision post LDA
 
-a=lda(Class.train ~., data=as.data.frame(train[,-g]))#on fait la LDA sur train
+a=MASS::lda(Class.train ~., data=as.data.frame(jitter(train)))#on fait la LDA sur train
 plot(a, col = as.numeric(train)) #on regarde la tete des axes factoriels
 
-train2=as.matrix(train[,-g])%*%as.matrix(a$scaling) ####on projete sur le nouvel espace de dim train via les axes trouv??s via train
+train2=as.matrix(train)%*%as.matrix(a$scaling) ####on projete sur le nouvel espace de dim train via les axes trouv??s via train
 plot(train2, col = as.numeric(train))
 
-test2=as.matrix(test[,-g])%*%as.matrix(a$scaling) ###On projete sur le nouvel espace de dim test via les axes trouv??s via train
+test2=as.matrix(test)%*%as.matrix(a$scaling) ###On projete sur le nouvel espace de dim test via les axes trouv??s via train
 plot(test2, col = as.numeric(test))
 
 
 fit <- rpart(Class.train ~ .,data=as.data.frame(train2))  ###on fit sur train
 prp(fit,extra=1)
-resLDA=res=predict(fit, as.data.frame(as.factor(test2)), type="class") ##on predit
+resLDA=predict(fit, as.data.frame(as.factor(test2)), type="class") ##on predit
 
 
 
