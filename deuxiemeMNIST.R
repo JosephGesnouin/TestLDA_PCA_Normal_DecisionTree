@@ -25,7 +25,7 @@ resNormal=predict(fit, as.data.frame(test), type="class")
 
 
 #####arbre de decision apres PCA on garde 100% de variance 
-a=FactoMineR::PCA(as.data.frame(train))
+a=FactoMineR::PCA(rbind(as.data.frame(train),as.data.frame(test)))
 train3=as.matrix(train)%*%as.matrix(a$var$coord)
 plot(train3, col = Class.train)
 
@@ -34,7 +34,7 @@ plot(test3, col = Class.test)
 
 fit <- rpart(Class.train ~ .,data=as.data.frame(train3)) ####on  entrain le cart sur le train
 prp(fit,extra=1)
-resPCA=res=predict(fit, as.data.frame(test3), type="class")
+resPCA=predict(fit, as.data.frame(test3), type="class")
 
 
 ####arbre de decision post LDA
@@ -57,27 +57,20 @@ resLDA=predict(fit, as.data.frame(test2), type="class") ##on predit
 
 
 #####Comparaison resultats:
-table(Class.test,resNormal) #Decision tree tout  seul
-"resNormal
-setosa versicolor virginica
-setosa        263          0         0
-versicolor      0        260         4
-virginica       0          7       266"
 
-table(Class.test,resPCA) #Decission tree post PCA
-"            resPCA
-setosa versicolor virginica
-setosa        263          0         0
-versicolor      0        260         4
-virginica       0          9       264"
-table(Class.test,resLDA) #Decision tree post LDA
-"            resLDA
-setosa versicolor virginica
-setosa        263          0         0
-versicolor      0        253        11
-virginica       0          0       273"
+#Decision tree tout  seul
+sum(diag(table(Class.test,resNormal)))/(dim(table(Class.test,resNormal))[1]*dim(table(Class.test,resNormal))[2]) 
+#61.9
+
+#Decission tree post PCA
+sum(diag(table(Class.test,resPCA)))/(dim(table(Class.test,resPCA))[1]*dim(table(Class.test,resPCA))[2]) 
+#57.08
+
+
+#Decision tree post LDA
+sum(diag(table(Class.test,resLDA)))/(dim(table(Class.test,resLDA))[1]*dim(table(Class.test,resLDA))[2])
+#77.47
 
 
 
-g=c(1,2,3,4,5,   6,   7,   8,   9,  10,  11,  12,  17,  18 , 19,  20,  21,  22,  23,  24,  25 , 26,  27,  28 , 29,  30 , 31 , 32 , 53 , 54,  55 , 56 , 57 , 58 , 83,  84,  85,  86, 112, 113, 141, 142, 169 ,197, 477, 561, 645, 646, 672, 673, 674, 700, 701, 702, 728 ,729, 730, 731, 732, 755, 756, 757, 758, 759 ,760 ,781, 782 ,783, 784)
 
