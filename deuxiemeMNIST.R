@@ -51,7 +51,7 @@ plot(test2, col = as.numeric(test))
 
 fit <- rpart(Class.train ~ .,data=as.data.frame(train2))  ###on fit sur train
 prp(fit,extra=1)
-resLDA=predict(fit, as.data.frame(as.factor(test2)), type="class") ##on predit
+resLDA=predict(fit, as.data.frame(test2), type="class") ##on predit
 
 
 
